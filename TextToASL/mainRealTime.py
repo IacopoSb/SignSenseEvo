@@ -65,9 +65,9 @@ if __name__ == "__main__":
     parser.add_argument("--directory", type=str, required=True)
     args = parser.parse_args()
 
-    poses = []  # Lista per memorizzare le pose riconosciute
-
     plt.ion()  # Attiva la modalità interattiva per la visualizzazione
+    
+    poses = []  # Lista per memorizzare le pose riconosciute
     for recognized_text in recognize_speech_from_microphone():
         poses.append(recognized_text)
         update_visualization(poses, args.directory)
