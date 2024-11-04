@@ -12,7 +12,7 @@ from pose_format import Pose
 from gloss_to_pose.pose_visualizer import PoseVisualizer
 
 
-def _text_to_pose(text: str, directory: str, fingerspelling: bool = True) -> Pose:
+def _text_to_pose(text: str, directory: str, fingerspelling: bool = False) -> Pose:
     if(fingerspelling):
         fingerspelling_lookup = FingerspellingPoseLookup(directory)
         poses = fingerspelling_lookup.lookup_sequence(text)
