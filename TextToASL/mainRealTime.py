@@ -1,4 +1,5 @@
 import argparse
+import os
 import speech_recognition as sr
 import time
 from gloss_to_pose.concatenate import concatenate_poses
@@ -51,20 +52,25 @@ def update_visualization(poses, directory):
     concatenated_pose = _text_to_pose(' '.join(poses), directory)
     
     # Visualizza in tempo reale
-    with plt.ioff():  # Disattiva il blocco di Matplotlib
-        plt.clf()  # Pulisce la figura
-        v = PoseVisualizer(concatenated_pose, thickness=4)
+    plt.gca().cla()  # Pulisce solo gli assi senza chiudere la figura
 
-        # Disegna la visualizzazione
-        v.draw()
-        plt.axis('off')  # Nasconde gli assi
-        plt.pause(0.1)  # Mantiene la visualizzazione aperta brevemente
+    v = PoseVisualizer(concatenated_pose, thickness=4)
+
+    # Disegna la visualizzazione
+    v.draw()
+    plt.axis('off')  # Nasconde gli assi
+    plt.pause(0.5)  # Mantiene la visualizzazione aperta brevemente
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--directory", type=str, required=True)
     args = parser.parse_args()
 
+    # Verifica se la directory esiste
+    if not os.path.isdir(args.directory):
+        print("Error: The specified directory does not exist.")
+        exit(1)
+        
     plt.ion()  # Attiva la modalità interattiva per la visualizzazione
     
     poses = []  # Lista per memorizzare le pose riconosciute
@@ -72,4 +78,4 @@ if __name__ == "__main__":
         poses.append(recognized_text)
         update_visualization(poses, args.directory)
 
-    plt.show()  # Mostra la figura finale
+    plt.ioff()  # Disattiva la modalità interattiva se necessario
