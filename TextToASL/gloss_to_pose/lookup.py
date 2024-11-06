@@ -20,7 +20,7 @@ class PoseLookup:
             }
         return dictionary
 
-    def __init__(self, directory: str = None):
+    def __init__(self, directory: str = "./lexicon"):
         if directory is None:
             raise ValueError("Can't access pose files without specifying a directory")
         self.directory = directory
@@ -55,7 +55,7 @@ class PoseLookup:
 
     def lookup(self, word: str) -> Pose:
         word = word.lower()
-        print("Looking up word:", word)
+        print("Word:", word)
         if word in self.dictionary:
             row = self.dictionary[word]
             print(row)

@@ -34,27 +34,27 @@ def trim_pose(pose, start=True, end=True):
 
 
 def concatenate_poses(poses: List[Pose], trim=True) -> Pose:
-    print('Reducing poses...')
+    #print('Reducing poses...')
     poses = [reduce_holistic(p) for p in poses]
 
-    print('Normalizing poses...')
+    #print('Normalizing poses...')
     poses = [normalize_pose(p) for p in poses]
 
     # Trim the poses to only include the parts where the hands are visible
     if trim:
-        print('Trimming poses...')
+        #print('Trimming poses...')
         poses = [trim_pose(p, i > 0, i < len(poses) - 1) for i, p in enumerate(poses)]
 
     # Concatenate all poses
-    print('Smooth concatenating poses...')
+    #print('Smooth concatenating poses...')
     pose = smooth_concatenate_poses(poses)
 
     # Correct the wrists (should be after smoothing)
-    print('Correcting wrists...')
+    #print('Correcting wrists...')
     pose = correct_wrists(pose)
 
     # Scale the newly created pose
-    print('Scaling pose...')
+    #print('Scaling pose...')
     scale_normalized_pose(pose)
 
     return pose

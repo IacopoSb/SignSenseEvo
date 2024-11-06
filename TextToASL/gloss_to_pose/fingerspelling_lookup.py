@@ -20,7 +20,7 @@ class FingerspellingPoseLookup():
             }
         return dictionary
 
-    def __init__(self, directory: str = None):
+    def __init__(self, directory: str = "./fingerspelling_lexicon"):
         if directory is None:
             raise ValueError("Can't access pose files without specifying a directory")
         self.directory = directory
@@ -33,9 +33,9 @@ class FingerspellingPoseLookup():
             rows = list(csv.DictReader(f))
 
         self.dictionary = self.make_dictionary_index(rows, based_on="word")
-        print("Dictionary: ", self.dictionary)
+        #print("Dictionary: ", self.dictionary)
         self.alphabet = sorted(self.dictionary.keys(), key=len, reverse=True)
-        print("Alfabets: ", self.alphabet)
+        #print("Alfabets: ", self.alphabet)
         
     # Metodo per leggere un file di pose
     def read_pose(self, filename: str):
@@ -62,7 +62,6 @@ class FingerspellingPoseLookup():
             found = False 
             for key in self.alphabet:
                 if word[current_index:].startswith(key):
-                    print("Character: ", self.dictionary[key])
                     results.append(self.get_pose(self.dictionary[key]))
                     current_index += len(key)
                     found = True
@@ -74,7 +73,7 @@ class FingerspellingPoseLookup():
 
     def lookup(self, word: str) -> Pose:
         word = word.lower()
-        print("Looking up word:", word)
+        print("Word:", word)
 
         poses_char = list(self.characters_lookup(word))
 

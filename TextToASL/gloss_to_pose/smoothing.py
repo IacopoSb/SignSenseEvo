@@ -80,7 +80,7 @@ def smooth_concatenate_poses(poses: List[Pose], padding=0.20) -> Pose:
 
     start = 0
     for i, pose in enumerate(poses):
-        print('Processing', i + 1, 'of', len(poses), '...')
+        #print('Processing', i + 1, 'of', len(poses), '...')
         if i != len(poses) - 1:
             end, next_start = find_best_connection_point(poses[i], poses[i + 1])
         else:
@@ -91,7 +91,7 @@ def smooth_concatenate_poses(poses: List[Pose], padding=0.20) -> Pose:
         start = next_start
 
     padding_pose = create_padding(padding, poses[0])
-    print('Concatenating...')
+    #print('Concatenating...')
     single_pose = concatenate_poses(poses, padding_pose)
-    print('Smoothing...')
+    #print('Smoothing...')
     return pose_savgol_filter(single_pose)
