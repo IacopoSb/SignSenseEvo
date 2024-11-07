@@ -5,6 +5,8 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import List
 #############################
 from pose_format import Pose
+from .fingerspelling_lookup import FingerspellingPoseLookup
+
 
 class PoseLookup:
     
@@ -20,12 +22,14 @@ class PoseLookup:
             }
         return dictionary
 
-    def __init__(self, directory: str = "./lexicon"):
-        if directory is None:
-            raise ValueError("Can't access pose files without specifying a directory")
-        self.directory = directory
+    def __init__(self, lookup_dir="./TextToASL/lexicon", fingerspelling_dir="./TextToASL/fingerspelling_lexicon"):
+        self.fingerspelling_lookup = FingerspellingPoseLookup(directory=fingerspelling_dir)
         
-        csv_path = os.path.join(directory, 'index.csv')
+        if lookup_dir is None:
+            raise ValueError("Can't access pose files without specifying a directory")
+        self.directory = lookup_dir
+        
+        csv_path = os.path.join(lookup_dir, 'index.csv')
         
         if not os.path.exists(csv_path):
             raise ValueError("Can't find index.csv file")
@@ -35,13 +39,11 @@ class PoseLookup:
 
         self.dictionary = self.make_dictionary_index(rows, based_on="word")
 
-    # Metodo per leggere un file di pose
     def read_pose(self, filename: str):
         pose_path = os.path.join(self.directory, filename)
         with open(pose_path, "rb") as f:
             return Pose.read(f.read())
 
-    # Metodo per ottenere la pose corrispondente a una riga
     def get_pose(self, row):
         pose = self.read_pose(row["filename"])
         #print("Header:", pose.header)
@@ -54,22 +56,15 @@ class PoseLookup:
         return Pose(pose.header, pose.body[start_frame:end_frame])
 
     def lookup(self, word: str) -> Pose:
-        word = word.lower()
-        print("Word:", word)
         if word in self.dictionary:
-            row = self.dictionary[word]
-            print(row)
-            pose = self.get_pose(row)
-            return pose
+            pose = self.get_pose(self.dictionary[word])
+            return word, pose
+        else:
+            return self.fingerspelling_lookup.lookup(word)
 
-        raise FileNotFoundError(f"Pose not found for term: {word}")
-
-
-    # Metodo per cercare una sequenza di termini
     def lookup_sequence(self, text: str):
-        words = text.split()
+        words = text.lower().split()
 
-        # Funzione interna per cercare ogni termine
         def lookup_term(word):
             try:
                 return self.lookup(word)
@@ -77,15 +72,7 @@ class PoseLookup:
                 print(e)
                 return None
 
-        # Esegue la ricerca in parallelo
         with ThreadPoolExecutor() as executor:
-            results = executor.map(lookup_term, words)
+            results = list(executor.map(lookup_term, words))
 
-        # Filtra i risultati non nulli
-        poses = [result for result in results if result is not None]
-
-        # Se non vengono trovate pose, solleva un'eccezione
-        if len(poses) == 0:
-            raise Exception(f"No poses found for terms in: {text}")
-
-        return poses
+        return results
