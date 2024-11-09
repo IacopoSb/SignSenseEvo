@@ -37,7 +37,7 @@ def text_to_pose(text: str) -> Pose:
     print(f"Concatenation took {time.time() - start:.2f} seconds")
     return pose
 
-def recognize_speech_from_microphone(ONLINE: bool = True):
+def recognize_speech_from_microphone(stop_event, ONLINE: bool = True):
     recognizer = sr.Recognizer()
     mic = sr.Microphone()
 
@@ -46,19 +46,27 @@ def recognize_speech_from_microphone(ONLINE: bool = True):
         recognizer.adjust_for_ambient_noise(source)
 
     while True:
+       
+        if stop_event.is_set():
+            break
+       
         with mic as source:
             print("Listening...")
-            audio = recognizer.listen(source)
+            audio = recognizer.listen(source, phrase_time_limit=10)
+
         try:
             if ONLINE:
                 text = recognizer.recognize_google(audio, language="it-IT")
             else:
+                # Offline recognition (Database it-IT required)
                 text = recognizer.recognize_sphinx(audio, language="it-IT")
+
+            print("Recognized text:", text)
 
             if text != "":
                 text_parsed = parse_text(text)
-                print("Recognized text:", text_parsed)
-                yield text_parsed
+                print("Parsed text:", text_parsed)
+                yield (text, text_parsed)
 
         except sr.UnknownValueError:
             print("Could not understand audio")
@@ -67,8 +75,8 @@ def recognize_speech_from_microphone(ONLINE: bool = True):
             print(f"Could not request results from Google Speech Recognition service; {e}")
             continue
 
-def frame_worker(frame_queue, stop_event, target_size=(240, 240)):
-    for recognized_text in recognize_speech_from_microphone():
+def frame_worker(frame_queue, stop_event, target_size):
+    for recognized_text, parsed_text in recognize_speech_from_microphone(stop_event):
         
         if stop_event.is_set():
             break
@@ -76,34 +84,80 @@ def frame_worker(frame_queue, stop_event, target_size=(240, 240)):
         print("Generating pose for recognized text...")
         start = time.time()
         
-        concatenated_pose = text_to_pose(recognized_text)
+        concatenated_pose = text_to_pose(parsed_text)
         p = PoseVisualizer(concatenated_pose, thickness=4)
 
         for frame in p.draw():
             if stop_event.is_set():
                 break
-            frame_resized = cv2.resize(np.array(frame, dtype=np.uint8), target_size)
-            frame_queue.put(frame_resized)
+            frame_resized = cv2.resize(np.array(frame, dtype=np.uint8), (target_size, target_size))
+            frame_queue.put((frame_resized, recognized_text))
         
         print(f"Total Pose generation took {time.time() - start:.2f} seconds")
 
-def display_worker(frame_queue, stop_event, fps = 35, target_size=(240, 240)):
-    frame_interval = 1/fps
-    frame_white = np.ones((target_size[1], target_size[0], 3), dtype=np.uint8) * 255
+def processing_text_to_display(text, max_width, font_scale, thickness):
+    accent_map = {
+        'à': "a'", 'á': "a'", 'è': "e'", 'é': "e'", 
+        'ì': "i'", 'í': "i'", 'ò': "o'", 'ó': "o'",
+        'ù': "u'", 'ú': "u'",
+    }
+    text = ''.join(accent_map.get(c, c) for c in text)
+    lines = []
+    current_line = ""
+    for word in text.split():
+        test_line = f"{current_line} {word}".strip()
+        text_size = cv2.getTextSize(test_line, cv2.FONT_HERSHEY_COMPLEX, fontScale=font_scale, thickness=thickness)[0]
+        if text_size[0] <= max_width:
+            current_line = test_line
+        else:
+            lines.append(current_line)
+            current_line = word
+    lines.append(current_line)
+    return lines
+
+def drawLines(frame, lines, font_scale=1, thickness=1):
+    y = 100  # Posizione iniziale y
+    for line in lines:
+        text_size = cv2.getTextSize(line, cv2.FONT_HERSHEY_COMPLEX, font_scale, thickness)[0]
+        text_x = (frame.shape[1] - text_size[0]) // 2
+        cv2.putText(frame, line, (text_x, y), cv2.FONT_HERSHEY_COMPLEX, fontScale=font_scale, color=(0, 0, 0), thickness=thickness, lineType=cv2.LINE_AA)
+        y += text_size[1] + 5  # Spazio tra le righe
+
+def display_worker(frame_queue, 
+                   stop_event, frame_size, 
+                   h_screen_size, v_screen_size,
+                    font_scale, thickness, fps=35):
+    frame_interval = 1 / fps
+    frame_white = np.ones((frame_size, frame_size, 3), dtype=np.uint8) * 255
+    text_white = "Listening..."
+
+    horizontal_border = max((h_screen_size - frame_size) // 2, 0)
+    vertical_border = max((v_screen_size - frame_size) // 2, 0)
+
+    # Imposta la finestra in modalità full screen
+    cv2.namedWindow("Pose Stream", cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty("Pose Stream", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     while True:
-
         if cv2.waitKey(int(frame_interval * 1000)) & 0xFF == ord('q'):
             stop_event.set()
             break
 
         if frame_queue.empty():
-            frame = frame_white
+            frame, text = frame_white.copy(), text_white
         else:
-            frame = frame_queue.get()  # Attendi un frame
-        
-        if frame is not None:
-            cv2.imshow("Pose Stream", frame)
+            frame, text = frame_queue.get()
+
+        # Aggiungi bordi calcolati per centrare l'immagine nello schermo
+        frame_with_borders = cv2.copyMakeBorder(
+            frame, vertical_border, vertical_border, horizontal_border, horizontal_border,
+            cv2.BORDER_CONSTANT, value=[255, 255, 255]
+        )
+
+        lines = processing_text_to_display(text, frame_with_borders.shape[0] - 10, font_scale, thickness)
+        drawLines(frame_with_borders, lines, font_scale, thickness)
+
+        cv2.imshow("Pose Stream", frame_with_borders)
 
     cv2.destroyAllWindows()
 
@@ -111,8 +165,20 @@ if __name__ == "__main__":
     frame_queue = queue.Queue()
     stop_event = threading.Event()
 
-    frame_thread = threading.Thread(target=frame_worker, args=(frame_queue, stop_event))
-    display_thread = threading.Thread(target=display_worker, args=(frame_queue, stop_event, 35))
+    fps = 35
+    frame_square_size = 480
+    h_screen_size = 1920
+    v_screen_size = 1080
+    font_scale = 3
+    thickness = 3
+
+    frame_thread = threading.Thread(target=frame_worker, 
+                                    args=(frame_queue, stop_event, frame_square_size))
+    display_thread = threading.Thread(target=display_worker, 
+                                      args=(frame_queue, stop_event, 
+                                            frame_square_size, 
+                                            h_screen_size, v_screen_size,
+                                             font_scale, thickness, fps))
 
     frame_thread.start()
     display_thread.start()
