@@ -1,2 +1,5 @@
 # SignSenseEvo
 The Evolution of SignSense
+
+Run SpeechToASL
+python mainRealTime.py --fps 40 --frame_square_size 720 --h_screen_size 1920 --v_screen_size 1080 --font_scale 3 --thickness 3
