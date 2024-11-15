@@ -204,4 +204,4 @@ if __name__ == "__main__":
     frame_thread.join()
     display_thread.join()
 
-#  py .\SpeechToASL\mainRealTime.py --fps 40 --frame_square_size 720 --h_screen_size 1920 --v_screen_size 1080 --font_scale 3 --thickness 3
+#  python .\SpeechToASL\mainRealTime.py --fps 40 --frame_square_size 720 --h_screen_size 1920 --v_screen_size 1080 --font_scale 3 --thickness 3
