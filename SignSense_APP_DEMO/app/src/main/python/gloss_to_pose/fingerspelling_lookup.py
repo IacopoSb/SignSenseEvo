@@ -7,6 +7,9 @@ from pose_format import Pose
 from .concatenate import concatenate_poses
 from concurrent.futures import ThreadPoolExecutor
 
+# Carica tutte le pose in memoria durante l'inizializzazione
+INIT_LOAD = True
+
 class FingerspellingPoseLookup():
     def make_dictionary_index(self, rows: List, based_on: str):
         dictionary = {}
@@ -16,11 +19,12 @@ class FingerspellingPoseLookup():
                 "filename": d['filename'],
                 "word": d[based_on],
                 "start": int(d['start']),
-                "end": int(d['end'])
+                "end": int(d['end']),
+                "pose": None  # Placeholder per Pose
             }
         return dictionary
 
-    def __init__(self, directory: str = "./SpeechToASL/fingerspelling_lexicon"):
+    def __init__(self, directory: str):
         if directory is None:
             raise ValueError("Can't access pose files without specifying a directory")
         self.directory = directory
@@ -28,7 +32,7 @@ class FingerspellingPoseLookup():
         csv_path = os.path.join(directory, 'index.csv')
 
         if not os.path.exists(csv_path):
-            raise ValueError("Can't find index.csv file")
+            raise ValueError("Can't find index.csv file", csv_path)
         
         with open(csv_path, mode='r', encoding='utf-8') as f:
             rows = list(csv.DictReader(f))
@@ -36,6 +40,11 @@ class FingerspellingPoseLookup():
         self.dictionary = self.make_dictionary_index(rows, based_on="word")
         self.alphabet = sorted(self.dictionary.keys(), key=len, reverse=True)
         
+        if INIT_LOAD:
+            # Carica tutte le pose in memoria durante l'inizializzazione
+            for key, value in self.dictionary.items():
+                value["pose"] = self.get_pose(value)
+
     # Metodo per leggere un file di pose
     def read_pose(self, filename: str):
         pose_path = os.path.join(self.directory, filename)
@@ -50,6 +59,8 @@ class FingerspellingPoseLookup():
     
     def characters_lookup(self, letter: str):
         if letter in self.dictionary:
+            if INIT_LOAD:
+                return self.dictionary[letter]["pose"]
             return self.get_pose(self.dictionary[letter])
         else:
             raise FileNotFoundError(f"Character {letter} not found in fingerspelling lexicon")

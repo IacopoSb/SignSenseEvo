@@ -22,7 +22,7 @@ class PoseLookup:
             }
         return dictionary
 
-    def __init__(self, lookup_dir="./TextToASL/lexicon", fingerspelling_dir="./TextToASL/fingerspelling_lexicon"):
+    def __init__(self, lookup_dir="./SpeechToASL/lexicon", fingerspelling_dir="./SpeechToASL/fingerspelling_lexicon"):
         self.fingerspelling_lookup = FingerspellingPoseLookup(directory=fingerspelling_dir)
         
         if lookup_dir is None:

@@ -141,9 +141,15 @@ def display_worker(frame_queue,
     cv2.setWindowProperty("Pose Stream", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     while True:
-        if cv2.waitKey(int(frame_interval * 1000)) & 0xFF == ord('q'):
+        key = cv2.waitKey(int(frame_interval * 1000)) & 0xFF
+        if key == ord('q'):
             stop_event.set()
             break
+        elif key == ord('w'):
+            # Svuota il buffer dei frame
+            with frame_queue.mutex:
+                frame_queue.queue.clear()
+            print("Frame buffer cleared.")
 
         if frame_queue.empty():
             frame, text = frame_white.copy(), text_white
@@ -198,4 +204,4 @@ if __name__ == "__main__":
     frame_thread.join()
     display_thread.join()
 
-# python mainRealTime.py --fps 40 --frame_square_size 720 --h_screen_size 1920 --v_screen_size 1080 --font_scale 3 --thickness 3
+#  py .\SpeechToASL\mainRealTime.py --fps 40 --frame_square_size 720 --h_screen_size 1920 --v_screen_size 1080 --font_scale 3 --thickness 3
