@@ -25,14 +25,8 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-
-// TODO
-// - Setting ImageView To null doesnt free the Viewer from the last frame
-// - Changing Progress Bar Visibility to VISIBLE doesnt show
-
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var progressBar: ProgressBar
     private lateinit var handler: Handler
     private lateinit var speechRecognizer: SpeechRecognizer
     private var frameIndex = 0
@@ -82,9 +76,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        progressBar.visibility = View.INVISIBLE
-
         // Avvio del modulo Python
         if (!Python.isStarted()) {
             Python.start(AndroidPlatform(this))
@@ -118,7 +109,17 @@ class MainActivity : AppCompatActivity() {
                 val data = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 val spokenText = data?.get(0) ?: ""
                 Log.d("SpeechResult", spokenText)
-                handleSpeechResult(spokenText)
+
+                findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+
+                Thread {
+                    handleSpeechResult(spokenText)
+                    runOnUiThread() {
+                        findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE
+                        findViewById<ImageView>(R.id.imageView).visibility = View.VISIBLE
+                        startFrameAnimation()
+                    }
+                }.start()
             }
 
             override fun onPartialResults(partialResults: Bundle?) {}
@@ -152,10 +153,9 @@ class MainActivity : AppCompatActivity() {
             Log.e("SpeechRecognizer", "Recognition service not available on this device.")
         }
     }
+
     private fun handleSpeechResult(text: String) {
         try {
-            progressBar.visibility = View.VISIBLE
-
             val callStartTime = System.currentTimeMillis()
             val module = Python.getInstance().getModule("mainAndroid")
             val framesPyObject =
@@ -212,16 +212,12 @@ class MainActivity : AppCompatActivity() {
                     bitmap
                 }
             }
-
             val endTime = System.currentTimeMillis()
             Log.d(
                 "Timing",
                 "Tempo totale per `handleSpeechResult`: ${(endTime - startTime) / 1000.0} s"
             )
-
             frameIndex = 0
-            progressBar.visibility = View.INVISIBLE
-            startFrameAnimation()
         } catch (e: Exception) {
             Toast.makeText(
                 this,
@@ -240,12 +236,14 @@ class MainActivity : AppCompatActivity() {
                         findViewById<ImageView>(R.id.imageView).setImageBitmap(it[frameIndex])
                         frameIndex++
                         handler.postDelayed(this, frameInterval)
+                    } else {
+                    // Animazione terminata: nascondi l'ImageView
+                    findViewById<ImageView>(R.id.imageView).visibility = View.INVISIBLE
                     }
                 }
             }
         }
         handler.post(runnable)
-        findViewById<ImageView>(R.id.imageView).setImageBitmap(null)
     }
 
 

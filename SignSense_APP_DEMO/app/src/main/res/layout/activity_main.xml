@@ -10,10 +10,11 @@
         android:id="@+id/progressBar"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        tools:layout_editor_absoluteX="105dp"
-        tools:layout_editor_absoluteY="100dp"
-        tools:ignore="MissingConstraints"
-        android:visibility="visible"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
     <Button
@@ -21,17 +22,21 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:text="@string/button"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="400dp"
         android:layout_height="400dp"
         android:contentDescription="@string/todo"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
