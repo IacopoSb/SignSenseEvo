@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>SignSense</title>
+    <style>
+        body {
+            background-color: #397a98;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: calc(100% - 20px); 
+            margin: 10px auto;
+            padding: 12px;
+            font-size: 16px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            box-sizing: border-box;
+        }
+        .button.download {
+            background-color: #4CAF50; 
+        }
+        .button.download:hover {
+            background-color: #45a049;
+        }
+        .button.github {
+            background-color: #333; 
+        }
+        .button.github:hover {
+            background-color: #555;
+        }
+        .participants {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="assets/logo.png" alt="SignSense Logo" class="logo">
+        <h1>SignSense</h1>
+        <a href="https://github.com/IacopoSb/SignSenseEvo" class="button download"><i class="fas fa-mobile-alt"></i> Download APK</a>
+        <a href="https://github.com/IacopoSb/SignSenseEvo" class="button github"><i class="fab fa-github"></i> Codice Sorgente su GitHub</a>
+        <br style="height: 100px;"/>
+        <div class="participants">
+            <h4>Immagina, Puoi</h4>
+<p>Andrea Berti, Matteo Bostrenghi, Pietro Coloretti, Leonardo Gennaioli, Nicole Giulianelli, Iacopo Sbalchiero</p>
+
+        </div>
+    </div>
+</body>
+</html>
