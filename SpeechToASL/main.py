@@ -4,9 +4,6 @@ from gloss_to_pose.concatenate import concatenate_poses
 from gloss_to_pose.lookup import PoseLookup
 from gloss_to_pose.fingerspelling_lookup import FingerspellingPoseLookup
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.animation import FuncAnimation
 #####################################################
 from pose_format import Pose
 from gloss_to_pose.pose_visualizer import PoseVisualizer
