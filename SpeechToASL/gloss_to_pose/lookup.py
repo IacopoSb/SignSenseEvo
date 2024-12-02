@@ -60,6 +60,7 @@ class PoseLookup:
             pose = self.get_pose(self.dictionary[word])
             return word, pose
         else:
+            print(f"Word '{word}' not found in lookup")
             return self.fingerspelling_lookup.lookup(word)
 
     def lookup_sequence(self, text: str):

@@ -29,6 +29,8 @@ def text_to_pose(text: str) -> Pose:
     words_poses = poseLookup.lookup_sequence(text)
     words, poses = zip(*words_poses)
 
+    print("Words: ", words)
+
     print(f"Lookup took {time.time() - start:.2f} seconds")
     print("CONCATENATE...")
     start = time.time()
@@ -65,7 +67,11 @@ def recognize_speech_from_microphone(stop_event, ONLINE: bool = True):
             print("Recognized text:", text)
 
             if text != "":
+                text = "Buongiorno, oggi vi presento SignSenseEvo"
+                #text = "Ciao come stai oggi? Io bene grazie."
                 text_parsed = parse_text(text)
+                text_parsed = "buongiorno oggi vi presento SignSenseEvo"
+                #text_parsed = "ciao comestai oggi io bene grazie"
                 print("Parsed text:", text_parsed)
                 yield (text, text_parsed)
 
