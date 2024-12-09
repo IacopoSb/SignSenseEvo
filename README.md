@@ -21,9 +21,9 @@ Inserendosi in un mercato in crescita nel settore delle tecnologie assistive, Si
 
 | Nome                                                                            | Profilo                   |
 |---------------------------------------------------------------------------------|----------------------------------|
-| Andrea Berti        ![Andrea](https://github.com/bertiandrea.png)               | [GitHub](https://github.com/bertiandrea) |
-| Matteo Bostrenghi   ![Matteo](https://github.com/Bostre17.png)                  | [GitHub](https://github.com/Bostre17) |
-| Pietro Coloretti    ![Pietro](https://github.com/PietroColoretti01.png)         | [GitHub](https://github.com/PietroColoretti01) |
-| Leonardo Gennaioli  ![Leonardo](https://github.com/leonardo-gennaioli.png)      | [GitHub](https://github.com/leonardo-gennaioli) |
-| Nicole Giulianelli  ![Nicole](https://github.com/NicoleGiulianelli2.png)        | [GitHub](https://github.com/NicoleGiulianelli2) |
-| Iacopo Sbalchiero   ![Iacopo](https://github.com/IacopoSb.png)                  | [GitHub](https://github.com/IacopoSb.png) |
+| Andrea Berti        ![Andrea](https://github.com/bertiandrea.png  | width=100)               | [GitHub](https://github.com/bertiandrea) |
+| Matteo Bostrenghi   ![Matteo](https://github.com/Bostre17.png | width=100)                  | [GitHub](https://github.com/Bostre17) |
+| Pietro Coloretti    ![Pietro](https://github.com/PietroColoretti01.png | width=100)         | [GitHub](https://github.com/PietroColoretti01) |
+| Leonardo Gennaioli  ![Leonardo](https://github.com/leonardo-gennaioli.png | width=100)      | [GitHub](https://github.com/leonardo-gennaioli) |
+| Nicole Giulianelli  ![Nicole](https://github.com/NicoleGiulianelli2.png | width=100)        | [GitHub](https://github.com/NicoleGiulianelli2) |
+| Iacopo Sbalchiero   ![Iacopo](https://github.com/IacopoSb.png | width=100)                  | [GitHub](https://github.com/IacopoSb.png) |
