@@ -21,7 +21,7 @@ Inserendosi in un mercato in crescita nel settore delle tecnologie assistive, Si
 
 | Nome                                                                            | Profilo                   |
 |---------------------------------------------------------------------------------|----------------------------------|
-| Andrea Berti        ![Andrea](https://github.com/bertiandrea.png  | width=100)               | [GitHub](https://github.com/bertiandrea) |
+| Andrea Berti        ![Andrea](https://github.com/bertiandrea.png  = 100x100)               | [GitHub](https://github.com/bertiandrea) |
 | Matteo Bostrenghi   ![Matteo](https://github.com/Bostre17.png | width=100)                  | [GitHub](https://github.com/Bostre17) |
 | Pietro Coloretti    ![Pietro](https://github.com/PietroColoretti01.png | width=100)         | [GitHub](https://github.com/PietroColoretti01) |
 | Leonardo Gennaioli  ![Leonardo](https://github.com/leonardo-gennaioli.png | width=100)      | [GitHub](https://github.com/leonardo-gennaioli) |
