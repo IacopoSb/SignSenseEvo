@@ -20,11 +20,12 @@ Inserendosi in un mercato in crescita nel settore delle tecnologie assistive, Si
 
 # Autori
 
-| Nome                                                                                                                                                                                               | Profilo GitHub                               |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| `<div align="center" style="margin: 10px;"><img src="https://github.com/bertiandrea.png" width="50" style="border-radius: 50%; margin-bottom: 5px;">``<br>`Andrea Berti`</div>`              | [GitHub](https://github.com/bertiandrea)        |
-| `<div align="center" style="margin: 10px;"><img src="https://github.com/Bostre17.png" width="50" style="border-radius: 50%; margin-bottom: 5px;">``<br>`Matteo Bostrenghi`</div>`            | [GitHub](https://github.com/Bostre17)           |
-| `<div align="center" style="margin: 10px;"><img src="https://github.com/PietroColoretti01.png" width="50" style="border-radius: 50%; margin-bottom: 5px;">``<br>`Pietro Coloretti`</div>`    | [GitHub](https://github.com/PietroColoretti01)  |
-| `<div align="center" style="margin: 10px;"><img src="https://github.com/leonardo-gennaioli.png" width="50" style="border-radius: 50%; margin-bottom: 5px;">``<br>`Leonardo Gennaioli`</div>` | [GitHub](https://github.com/leonardo-gennaioli) |
-| `<div align="center" style="margin: 10px;"><img src="https://github.com/NicoleGiulianelli2.png" width="50" style="border-radius: 50%; margin-bottom: 5px;">``<br>`Nicole Giulianelli`</div>` | [GitHub](https://github.com/NicoleGiulianelli2) |
-| `<div align="center" style="margin: 10px;"><img src="https://github.com/IacopoSb.png" width="50" style="border-radius: 50%; margin-bottom: 5px;">``<br>`Iacopo Sbalchiero`</div>`            | [GitHub](https://github.com/IacopoSb)           |
+| Nome                                                  | Profilo GitHub                              |
+| ----------------------------------------------------- | ------------------------------------------- |
+| <div align="center"><img src="https://github.com/bertiandrea.png" width="50" style="border-radius: 50%;"><br>Andrea Berti</div> | [GitHub](https://github.com/bertiandrea)    |
+| <div align="center"><img src="https://github.com/Bostre17.png" width="50" style="border-radius: 50%;"><br>Matteo Bostrenghi</div> | [GitHub](https://github.com/Bostre17)       |
+| <div align="center"><img src="https://github.com/PietroColoretti01.png" width="50" style="border-radius: 50%;"><br>Pietro Coloretti</div> | [GitHub](https://github.com/PietroColoretti01) |
+| <div align="center"><img src="https://github.com/leonardo-gennaioli.png" width="50" style="border-radius: 50%;"><br>Leonardo Gennaioli</div> | [GitHub](https://github.com/leonardo-gennaioli) |
+| <div align="center"><img src="https://github.com/NicoleGiulianelli2.png" width="50" style="border-radius: 50%;"><br>Nicole Giulianelli</div> | [GitHub](https://github.com/NicoleGiulianelli2) |
+| <div align="center"><img src="https://github.com/IacopoSb.png" width="50" style="border-radius: 50%;"><br>Iacopo Sbalchiero</div> | [GitHub](https://github.com/IacopoSb)       |
+
